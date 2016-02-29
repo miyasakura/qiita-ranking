@@ -11,21 +11,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160229063140) do
+ActiveRecord::Schema.define(version: 20160229075549) do
 
-  create_table "qiita_users", force: :cascade do |t|
-    t.string   "name",              null: false
-    t.integer  "followers",         null: false
-    t.integer  "follows",           null: false
-    t.integer  "items",             null: false
-    t.integer  "followings",        null: false
-    t.integer  "contributions",     null: false
-    t.integer  "contribution_rank", null: false
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+  create_table "contribution_ranking_versions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  add_index "qiita_users", ["contribution_rank"], name: "index_qiita_users_on_contribution_rank"
+  create_table "contribution_rankings", force: :cascade do |t|
+    t.integer  "contribution_ranking_version_id"
+    t.integer  "qiita_user_id"
+    t.string   "name"
+    t.integer  "contributions"
+    t.integer  "rank"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "contribution_rankings", ["name", "contribution_ranking_version_id"], name: "name_version_index"
+  add_index "contribution_rankings", ["rank", "contribution_ranking_version_id"], name: "rank_version_index"
+
+  create_table "qiita_users", force: :cascade do |t|
+    t.string   "name",          null: false
+    t.integer  "followers"
+    t.integer  "items"
+    t.integer  "contributions"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
   add_index "qiita_users", ["name"], name: "index_qiita_users_on_name", unique: true
 
 end

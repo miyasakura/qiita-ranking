@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  contribution_ranking_version_id: 1
+  qiita_user_id: 1
+  name: MyString
+  contributions: 1
+  rank: 1
+
+two:
+  contribution_ranking_version_id: 1
+  qiita_user_id: 1
+  name: MyString
+  contributions: 1
+  rank: 1
