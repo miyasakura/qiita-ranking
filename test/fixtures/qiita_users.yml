@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  followers: 1
+  follows: 1
+  items: 1
+  followings: 1
+  contributions: 1
+  contribution_rank: 1
+
+two:
+  name: MyString
+  followers: 1
+  follows: 1
+  items: 1
+  followings: 1
+  contributions: 1
+  contribution_rank: 1
