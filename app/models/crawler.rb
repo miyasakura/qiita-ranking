@@ -38,7 +38,7 @@ class Crawler
     sleep 0.5
     elements =  page.css(".userActivityChart_statCount")
     if elements.count != 3
-      raise
+      return
     end
     qiita_user.contributions = page.css(".userActivityChart_statCount")[0].inner_html.to_i
     qiita_user.followers = page.css(".userActivityChart_statCount")[1].inner_html.to_i

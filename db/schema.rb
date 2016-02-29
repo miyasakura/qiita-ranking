@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160229075549) do
+ActiveRecord::Schema.define(version: 20160229080515) do
 
   create_table "contribution_ranking_versions", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20160229075549) do
     t.datetime "updated_at",    null: false
   end
 
+  add_index "qiita_users", ["contributions"], name: "index_qiita_users_on_contributions"
   add_index "qiita_users", ["name"], name: "index_qiita_users_on_name", unique: true
 
 end
