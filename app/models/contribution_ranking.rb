@@ -35,6 +35,7 @@ class ContributionRanking < ActiveRecord::Base
       )
     end
 
+    # activerecord-import (bulk insert)
     import ranking
 
   end
