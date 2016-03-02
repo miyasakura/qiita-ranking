@@ -3,6 +3,8 @@
 class Crawler
   QIITA_DOMAIN = 'https://qiita.com'
   USER_LIST_PAGE = QIITA_DOMAIN + '/users'
+  ERROR_TEMPORARY = 1
+  ERROR_PERMANENTLY = 2
 
   def initialize
     @agent = Mechanize.new
@@ -11,11 +13,11 @@ class Crawler
   def register_all_users
     (1..100000).each do |i|
       names = get_user_names_in_page(i)
-      if names.size > 0
-        register_new_users(names)
-      else
+      if names.count == QiitaUser.where(name: names).count
         break
       end
+
+      register_new_users(names)
     end
   end
 
@@ -33,17 +35,64 @@ class Crawler
   end
 
   def update_data(qiita_user)
-    url = USER_LIST_PAGE + "/#{qiita_user.name}"
+    data = _get_user_data(qiita_user.name)
+    if data[:error]
+      if data[:error] == ERROR_PERMANENTLY
+        qiita_user.error = true
+        qiita_user.save!
+      end
+
+      return
+    end
+
+    qiita_user.contributions = data[:contributions]
+    qiita_user.followers = data[:followers]
+    qiita_user.items = data[:items]
+    qiita_user.save!
+  end
+
+  def register_if_valid_user(name)
+    data = _get_user_data(name)
+    unless data
+      return
+    end
+
+    qiita_user = QiitaUser.find_or_create_by(name: name)
+    qiita_user.contributions = data[:contributions]
+    qiita_user.followers = data[:followers]
+    qiita_user.items = data[:items]
+    qiita_user.save!
+
+    return qiita_user
+  end
+
+  def _get_user_data(name)
+    url = USER_LIST_PAGE + "/#{name}"
     page = @agent.get(url)
     sleep 0.5
     elements =  page.css(".userActivityChart_statCount")
     if elements.count != 3
-      return
+      puts "elements not found"
+      return { :error => ERROR_PERMANENTLY }
     end
-    qiita_user.contributions = page.css(".userActivityChart_statCount")[0].inner_html.to_i
-    qiita_user.followers = page.css(".userActivityChart_statCount")[1].inner_html.to_i
-    qiita_user.items = page.css(".userActivityChart_statCount")[2].inner_html.to_i
-    qiita_user.save!
+
+    return {
+        contributions: page.css(".userActivityChart_statCount")[0].inner_html.to_i,
+        followers: page.css(".userActivityChart_statCount")[1].inner_html.to_i,
+        items: page.css(".userActivityChart_statCount")[2].inner_html.to_i,
+    }
+
+  rescue Mechanize::RedirectLimitReachedError => e
+    puts e.message
+    return { :error => ERROR_PERMANENTLY }
+
+  rescue Mechanize::ResponseCodeError => e
+    puts e.message
+    if e.response_code == 404
+      return { :error => ERROR_PERMANENTLY }
+    else
+      return { :error => ERROR_TEMPORARY }
+    end
   end
 
 end

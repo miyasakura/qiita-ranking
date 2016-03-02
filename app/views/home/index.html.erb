@@ -1,0 +1,9 @@
+<h1>Qiita Ranker</h1>
+
+<p>
+  <%= form_tag("/ranking", {enforce_utf8: false, method: "get"}) do %>
+      <%= label_tag(:id, "QiitaのIDを入力してください") %>
+      <%= text_field_tag(:id) %>
+      <%= submit_tag("送信", name: nil) %>
+  <% end %>
+</p>

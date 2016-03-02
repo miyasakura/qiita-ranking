@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160229080515) do
+ActiveRecord::Schema.define(version: 20160301163924) do
 
   create_table "contribution_ranking_versions", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -31,16 +31,7 @@ ActiveRecord::Schema.define(version: 20160229080515) do
   add_index "contribution_rankings", ["name", "contribution_ranking_version_id"], name: "name_version_index"
   add_index "contribution_rankings", ["rank", "contribution_ranking_version_id"], name: "rank_version_index"
 
-  create_table "qiita_users", force: :cascade do |t|
-    t.string   "name",          null: false
-    t.integer  "followers"
-    t.integer  "items"
-    t.integer  "contributions"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  add_index "qiita_users", ["contributions"], name: "index_qiita_users_on_contributions"
-  add_index "qiita_users", ["name"], name: "index_qiita_users_on_name", unique: true
+# Could not dump table "qiita_users" because of following NoMethodError
+#   undefined method `[]' for nil:NilClass
 
 end

@@ -1,7 +1,6 @@
 class ContributionRanking < ActiveRecord::Base
   def self.update_all
-    version = ContributionRankingVersion.order("id desc").first
-    version_id = version ? version.id : 1
+    version = ContributionRankingVersion.create!
 
     current_contribution = -1
     current_rank = 0
@@ -11,13 +10,14 @@ class ContributionRanking < ActiveRecord::Base
       if current_contribution == qiita_user.contributions
         users_in_rank << qiita_user
       else
-        register_ranking(version_id, current_rank, users_in_rank)
+        register_ranking(version.id, current_rank, users_in_rank)
 
         current_contribution = qiita_user.contributions
         users_in_rank = [qiita_user]
         current_rank += 1
       end
     end
+
   end
 
   def self.register_ranking(version_id, rank, qiita_users)
@@ -38,6 +38,27 @@ class ContributionRanking < ActiveRecord::Base
     # activerecord-import (bulk insert)
     import ranking
 
+  end
+
+  def self.calculate_ranking(qiita_user, version_id)
+    # contributionからそれっぽいランキングを出す
+    contributions = qiita_user.contributions
+
+    ranking_upper = ContributionRanking.find_by_sql(
+        [
+            "select * from contribution_rankings where contribution_ranking_version_id = ? and contributions >= ? order by contributions desc limit 1",
+            version_id,
+            contributions,
+        ]
+    )
+
+    if ranking_upper.count == 0
+      return 1
+    elsif ranking_upper.first.contributions == contributions
+      return ranking_upper.rank
+    else
+      return ranking_upper.rank + 1
+    end
   end
 
 end
