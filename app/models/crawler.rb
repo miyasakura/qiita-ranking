@@ -11,8 +11,10 @@ class Crawler
   end
 
   def register_all_users
-    (1..100000).each do |i|
-      names = get_user_names_in_page(i)
+    page_from = 1
+    page_to = Rails.env.development? ? 10 : 100000
+    (page_from..page_to).each do |page|
+      names = get_user_names_in_page(page)
       if names.count == QiitaUser.where(name: names).count
         break
       end

@@ -19,19 +19,29 @@ ActiveRecord::Schema.define(version: 20160301163924) do
   end
 
   create_table "contribution_rankings", force: :cascade do |t|
-    t.integer  "contribution_ranking_version_id"
-    t.integer  "qiita_user_id"
-    t.string   "name"
-    t.integer  "contributions"
-    t.integer  "rank"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.integer  "contribution_ranking_version_id", limit: 4
+    t.integer  "qiita_user_id",                   limit: 4
+    t.string   "name",                            limit: 255
+    t.integer  "contributions",                   limit: 4
+    t.integer  "rank",                            limit: 4
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
   end
 
-  add_index "contribution_rankings", ["name", "contribution_ranking_version_id"], name: "name_version_index"
-  add_index "contribution_rankings", ["rank", "contribution_ranking_version_id"], name: "rank_version_index"
+  add_index "contribution_rankings", ["name", "contribution_ranking_version_id"], name: "name_version_index", using: :btree
+  add_index "contribution_rankings", ["rank", "contribution_ranking_version_id"], name: "rank_version_index", using: :btree
 
-# Could not dump table "qiita_users" because of following NoMethodError
-#   undefined method `[]' for nil:NilClass
+  create_table "qiita_users", force: :cascade do |t|
+    t.string   "name",          limit: 255,                 null: false
+    t.integer  "followers",     limit: 4
+    t.integer  "items",         limit: 4
+    t.integer  "contributions", limit: 4
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.boolean  "error",                     default: false
+  end
+
+  add_index "qiita_users", ["contributions"], name: "index_qiita_users_on_contributions", using: :btree
+  add_index "qiita_users", ["name"], name: "index_qiita_users_on_name", unique: true, using: :btree
 
 end
