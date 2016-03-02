@@ -26,7 +26,7 @@ class ContributionRanking < ActiveRecord::Base
     ranking = []
 
     qiita_users.each do |qiita_user|
-      ranking << new(
+      create!(
           contribution_ranking_version_id: version_id,
           qiita_user_id: qiita_user.id,
           name: qiita_user.name,
@@ -34,9 +34,6 @@ class ContributionRanking < ActiveRecord::Base
           rank: rank,
       )
     end
-
-    # activerecord-import (bulk insert)
-    import ranking
 
   end
 

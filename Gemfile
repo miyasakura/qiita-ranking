@@ -46,5 +46,4 @@ group :development do
 end
 
 gem 'mechanize'
-gem 'activerecord-import'
 gem 'mysql2'
