@@ -1,0 +1,23 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  pool: 5
+  username: <%= ENV['RAILS_QIITA_RANKER_DATABASE_USER'] %>
+  password: <%= ENV['RAILS_QIITA_RANKER_DATABASE_PASSWORD'] %>
+  host: <%= ENV['RAILS_QIITA_RANKER_DATABASE_HOST'] %>
+
+development:
+  <<: *default
+  database: 0y3di_qiitarank_dev
+
+test:
+  <<: *default
+  database: qiitarank_test
+  username: root
+  password: password
+  host: localhost
+
+production:
+  <<: *default
+  database: 0y3di_qiitarank
