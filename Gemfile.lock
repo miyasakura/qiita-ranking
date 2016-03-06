@@ -88,6 +88,7 @@ GEM
     mysql2 (0.4.3)
     net-http-digest_auth (1.4)
     net-http-persistent (2.9.4)
+    newrelic_rpm (3.15.0.314)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
     ntlm-http (0.1.1)
@@ -174,6 +175,7 @@ DEPENDENCIES
   jquery-rails
   mechanize
   mysql2
+  newrelic_rpm
   puma
   rails (= 4.2.5.1)
   sass-rails (~> 5.0)

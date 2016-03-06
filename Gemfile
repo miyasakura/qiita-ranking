@@ -48,3 +48,4 @@ end
 gem 'mechanize'
 gem 'mysql2'
 gem 'puma'
+gem 'newrelic_rpm'
