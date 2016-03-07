@@ -52,9 +52,9 @@ class ContributionRanking < ActiveRecord::Base
     if ranking_upper.count == 0
       return 1
     elsif ranking_upper.first.contributions == contributions
-      return ranking_upper.rank
+      return ranking_upper.first.rank
     else
-      return ranking_upper.rank + 1
+      return ranking_upper.first.rank + 1
     end
   end
 
