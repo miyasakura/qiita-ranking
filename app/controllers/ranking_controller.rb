@@ -2,15 +2,19 @@ class RankingController < ApplicationController
   def index
     name = params[:id]
 
+    unless name
+      return render :file => "ranking/user_not_found"
+    end
+
     @qiita_user = QiitaUser.find_by_name(name)
 
     unless @qiita_user
       @qiita_user = Crawler.new.register_if_valid_user(name)
       unless @qiita_user
-        render :file => "ranking/user_not_found"
+        return render :file => "ranking/user_not_found"
       end
     end
-pry
+
     @version = ContributionRankingVersion.order("id desc").limit(1).first
     ranking = ContributionRanking.find_by(qiita_user_id: @qiita_user.id, contribution_ranking_version_id: @version.id)
     if ranking
