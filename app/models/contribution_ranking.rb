@@ -12,9 +12,9 @@ class ContributionRanking < ActiveRecord::Base
       else
         register_ranking(version.id, current_rank, users_in_rank)
 
+        current_rank += users_in_rank.count
         current_contribution = qiita_user.contributions
         users_in_rank = [qiita_user]
-        current_rank += 1
       end
     end
 
