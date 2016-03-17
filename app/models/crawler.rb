@@ -55,7 +55,7 @@ class Crawler
 
   def register_if_valid_user(name)
     data = _get_user_data(name)
-    unless data
+    if data[:error]
       return
     end
 
