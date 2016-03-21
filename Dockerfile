@@ -18,9 +18,9 @@ RUN bundle exec rake assets:precompile
 RUN mkdir -p $APP_HOME/tmp/pids
 RUN mkdir -p $APP_HOME/tmp/sockets
 
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY docker/nginx.conf /etc/nginx/nginx.conf
 
-copy supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 80
 CMD ["/usr/bin/supervisord"]
