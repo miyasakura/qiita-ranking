@@ -37,7 +37,7 @@ state_path "#{application_path}/tmp/pids/puma.state"
 # (“append”) specifies whether the output is appended, the default is
 # “false”.
 #
-stdout_redirect "#{application_path}/log/puma.stdout.log", "#{application_path}/log/puma.stderr.log"
+# stdout_redirect "#{application_path}/log/puma.stdout.log", "#{application_path}/log/puma.stderr.log"
 # stdout_redirect '/u/apps/lolcat/log/stdout', '/u/apps/lolcat/log/stderr', true
 
 # Disable request logging.
